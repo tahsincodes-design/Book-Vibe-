@@ -12,7 +12,8 @@ const links = (
 
 const Navbar = () => {
   return (
-    <div className="navbar bg-base-100 px-8 lg:px-16">
+    <nav className='bg-base-100 shadow-sm'>
+        <div className="navbar bg-base-100 max-w-7xl container mx-auto px-8 lg:px-16">
       {/* Mobile Menu & Logo */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -62,6 +63,7 @@ const Navbar = () => {
         </button>
       </div>
     </div>
+    </nav>
   );
 };
 
