@@ -6,40 +6,43 @@ import { Book } from '@/Components/Shared/BookCard';
 import ListedBookCard from '@/Components/ListedBookCard';
 
 const ListedBooks = () => {
-  const { readList, wishList } = useBookContext();
+  const { readList, wishList, isLoaded } = useBookContext();
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [activeTab, setActiveTab] = useState<'read' | 'wishlist'>('read');
   const [sortBy, setSortBy] = useState<string>('');
 
-  // Fetch all books
   useEffect(() => {
-    fetch('http://localhost:3000/booksData.json')
+    fetch('/booksData.json')
       .then((res) => res.json())
       .then((data) => setAllBooks(data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error('Error fetching books:', err));
   }, []);
 
-  // Filter books based on active tab IDs stored in Context
   const targetIds = activeTab === 'read' ? readList : wishList;
-  const displayedBooks = allBooks.filter((book) => targetIds.includes(book.bookId));
+  let displayedBooks = allBooks.filter((book) => targetIds.includes(book.bookId));
 
-  // Sorting logic
   if (sortBy === 'rating') {
-    displayedBooks.sort((a, b) => b.rating - a.rating);
+    displayedBooks = [...displayedBooks].sort((a, b) => b.rating - a.rating);
   } else if (sortBy === 'pages') {
-    displayedBooks.sort((a, b) => b.totalPages - a.totalPages);
+    displayedBooks = [...displayedBooks].sort((a, b) => b.totalPages - a.totalPages);
   } else if (sortBy === 'year') {
-    displayedBooks.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
+    displayedBooks = [...displayedBooks].sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-[#23BE0A]"></span>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 lg:px-8 my-8">
-      {/* Title Header */}
       <div className="bg-[#131313]/5 rounded-2xl py-8 text-center mb-8">
         <h1 className="text-3xl font-bold font-serif text-[#131313]">Books</h1>
       </div>
 
-      {/* Sort Dropdown */}
       <div className="flex justify-center mb-10">
         <select
           value={sortBy}
@@ -53,31 +56,27 @@ const ListedBooks = () => {
         </select>
       </div>
 
-      {/* Tabs */}
       <div className="flex border-b border-gray-200 mb-8">
         <button
           onClick={() => setActiveTab('read')}
-          className={`py-3 px-5 font-semibold text-base border-b-2 transition-all ${
-            activeTab === 'read'
-              ? 'border-[#23BE0A] text-[#23BE0A]'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
+          className={`py-3 px-5 font-semibold text-base border-b-2 transition-all ${activeTab === 'read'
+            ? 'border-[#23BE0A] text-[#23BE0A]'
+            : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
         >
           Read Books ({readList.length})
         </button>
         <button
           onClick={() => setActiveTab('wishlist')}
-          className={`py-3 px-5 font-semibold text-base border-b-2 transition-all ${
-            activeTab === 'wishlist'
-              ? 'border-[#23BE0A] text-[#23BE0A]'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
+          className={`py-3 px-5 font-semibold text-base border-b-2 transition-all ${activeTab === 'wishlist'
+            ? 'border-[#23BE0A] text-[#23BE0A]'
+            : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
         >
           Wishlist Books ({wishList.length})
         </button>
       </div>
 
-      {/* Book Cards Container */}
       {displayedBooks.length > 0 ? (
         <div className="space-y-6">
           {displayedBooks.map((book) => (

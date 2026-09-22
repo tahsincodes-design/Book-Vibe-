@@ -28,7 +28,7 @@ const Banner = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
             <Link
-              href="/listed-books"
+              href="/ListedBookPage"
               className="w-full sm:w-auto inline-flex items-center justify-center bg-[#23BE0A] hover:bg-[#1f9c09] text-white font-bold text-base px-8 py-4 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               View The List

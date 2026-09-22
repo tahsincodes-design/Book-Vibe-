@@ -11,10 +11,17 @@ interface IBookDetailsPageProps {
 }
 
 const getBooks = async (): Promise<Book[]> => {
-  const response = await fetch('http://localhost:3000/booksData.json', {
-    cache: 'no-store',
-  });
-  return response.json();
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/booksData.json`, {
+      cache: 'no-store',
+    });
+    if (!response.ok) throw new Error('Failed to fetch books');
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching books data:', error);
+    return [];
+  }
 };
 
 const BookDetailPage = async ({ params }: IBookDetailsPageProps) => {
@@ -26,10 +33,7 @@ const BookDetailPage = async ({ params }: IBookDetailsPageProps) => {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
         <h2 className="text-2xl font-bold text-gray-800">Book Not Found</h2>
-        <Link
-          href="/"
-          className="btn bg-[#23BE0A] text-white hover:bg-[#1f9c09] border-none"
-        >
+        <Link href="/" className="btn bg-[#23BE0A] text-white hover:bg-[#1f9c09] border-none">
           Back to Home
         </Link>
       </div>
@@ -53,27 +57,22 @@ const BookDetailPage = async ({ params }: IBookDetailsPageProps) => {
   return (
     <div className="max-w-7xl mx-auto px-4 lg:px-8 my-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        
-        {/* Left Side: Image */}
-        <div className="lg:col-span-5 bg-[#131313]/5 rounded-3xl p-10 lg:p-16 flex items-center justify-center min-h-120 lg:min-h-140">
+        <div className="lg:col-span-5 bg-[#131313]/5 rounded-3xl p-10 lg:p-16 flex items-center justify-center min-h-96">
           <Image
             src={image}
             alt={bookName}
             width={800}
             height={600}
-            className="max-h-105 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+            className="max-h-96 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
           />
         </div>
 
-        {/* Right Side: Details */}
         <div className="lg:col-span-7 space-y-4">
           <div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-[#131313] leading-tight">
               {bookName}
             </h1>
-            <p className="text-gray-600 font-medium text-lg mt-2">
-              By : {author}
-            </p>
+            <p className="text-gray-600 font-medium text-lg mt-2">By : {author}</p>
           </div>
 
           <div className="border-t border-gray-200" />
@@ -89,10 +88,7 @@ const BookDetailPage = async ({ params }: IBookDetailsPageProps) => {
             <span className="font-bold text-[#131313]">Tag</span>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="px-4 py-1.5 rounded-full text-[#23BE0A] bg-[#23BE0A]/10 text-sm font-semibold"
-                >
+                <span key={idx} className="px-4 py-1.5 rounded-full text-[#23BE0A] bg-[#23BE0A]/10 text-sm font-semibold">
                   #{tag}
                 </span>
               ))}
@@ -101,28 +97,24 @@ const BookDetailPage = async ({ params }: IBookDetailsPageProps) => {
 
           <div className="border-t border-gray-200" />
 
-          {/* Specifications */}
           <div className="grid grid-cols-2 gap-y-3 max-w-sm text-sm sm:text-base py-2">
-            <span className="text-gray-500 font-normal">Number of Pages:</span>
+            <span className="text-gray-500">Number of Pages:</span>
             <span className="font-bold text-[#131313]">{totalPages}</span>
 
-            <span className="text-gray-500 font-normal">Publisher:</span>
+            <span className="text-gray-500">Publisher:</span>
             <span className="font-bold text-[#131313]">{publisher}</span>
 
-            <span className="text-gray-500 font-normal">Year of Publishing:</span>
+            <span className="text-gray-500">Year of Publishing:</span>
             <span className="font-bold text-[#131313]">{yearOfPublishing}</span>
 
-            <span className="text-gray-500 font-normal">Rating:</span>
+            <span className="text-gray-500">Rating:</span>
             <span className="font-bold text-[#131313]">{rating.toFixed(1)}</span>
           </div>
 
-          {/* Action Buttons Component */}
           <div className="pt-4">
             <ReadButton bookId={bookId} />
           </div>
-
         </div>
-
       </div>
     </div>
   );

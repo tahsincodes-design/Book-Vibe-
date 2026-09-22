@@ -16,11 +16,7 @@ export interface Book {
   yearOfPublishing: number;
 }
 
-interface BookCardProps {
-  book: Book;
-}
-
-const BookCard = ({ book }: BookCardProps) => {
+const BookCard = ({ book }: { book: Book }) => {
   const { bookId, bookName, author, image, category, rating, tags, totalPages, yearOfPublishing } = book;
 
   return (
@@ -28,7 +24,6 @@ const BookCard = ({ book }: BookCardProps) => {
       href={`/Books/${bookId}`}
       className="group border border-gray-200/80 rounded-2xl p-6 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full w-full"
     >
-      {/* Cover Image Container */}
       <div className="bg-[#F3F3F3] rounded-2xl p-6 flex items-center justify-center h-60 w-full mb-4">
         <Image
           src={image}
@@ -39,34 +34,24 @@ const BookCard = ({ book }: BookCardProps) => {
         />
       </div>
 
-      {/* Card Details */}
       <div className="flex-1 flex flex-col justify-between">
-        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
           {tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="px-3 py-1 rounded-full text-[#23BE0A] bg-[#23BE0A]/10 text-xs font-semibold"
-            >
+            <span key={idx} className="px-3 py-1 rounded-full text-[#23BE0A] bg-[#23BE0A]/10 text-xs font-semibold">
               {tag}
             </span>
           ))}
         </div>
 
-        {/* Title & Author */}
         <div className="space-y-1 mb-3">
           <h2 className="text-xl font-bold font-serif text-[#131313] line-clamp-1 group-hover:text-[#23BE0A] transition-colors">
             {bookName}
           </h2>
-          <p className="text-sm font-medium text-gray-600">
-            By : {author}
-          </p>
+          <p className="text-sm font-medium text-gray-600">By : {author}</p>
         </div>
 
-        {/* Dashed Separator */}
         <div className="border-t-2 border-dashed border-gray-200 my-3" />
 
-        {/* Category & Rating */}
         <div className="flex items-center justify-between text-sm font-medium text-gray-600">
           <span>{category}</span>
           <span>Pages: {totalPages}</span>
