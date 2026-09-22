@@ -5,7 +5,7 @@ import React from 'react';
 const links = (
   <>
     <li><Link href="/">Home</Link></li>
-    <li><Link href="/Books">Listed Books</Link></li>
+    <li><Link href="/ListedBookPage">Listed Books</Link></li>
     <li><Link href="/PagesTORead">Pages to Read</Link></li>
   </>
 );

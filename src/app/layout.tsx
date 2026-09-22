@@ -5,8 +5,8 @@ import Footer from "@/Components/Footer";
 import { BookProvider } from "@/Components/Context/BookContext";
 
 export const metadata: Metadata = {
-  title: "Book Vibe | Discover & Track Your Reads",
-  description: "A modern web application to explore books, manage your shelf, and track reading analytics.",
+  title: "Book Vibe",
+  description: "Explore and track your book collection",
 };
 
 export default function RootLayout({
@@ -18,11 +18,9 @@ export default function RootLayout({
     <html lang="en" data-theme="light">
       <body className="min-h-screen flex flex-col antialiased">
         <BookProvider>
-        <Navbar />
-        <main className="grow">
-          {children}
-        </main>
-        <Footer />
+          <Navbar />
+          <main className="grow">{children}</main>
+          <Footer />
         </BookProvider>
       </body>
     </html>
