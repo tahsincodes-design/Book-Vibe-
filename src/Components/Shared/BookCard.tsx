@@ -21,11 +21,11 @@ interface BookCardProps {
 }
 
 const BookCard = ({ book }: BookCardProps) => {
-  const { bookId, bookName, author, image, category, rating, tags } = book;
+  const { bookId, bookName, author, image, category, rating, tags, totalPages, yearOfPublishing } = book;
 
   return (
     <Link
-      href={`/books/${bookId}`}
+      href={`/Books/${bookId}`}
       className="group border border-gray-200/80 rounded-2xl p-6 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full w-full"
     >
       {/* Cover Image Container */}
@@ -33,6 +33,8 @@ const BookCard = ({ book }: BookCardProps) => {
         <Image
           src={image}
           alt={bookName}
+          width={800}
+          height={600}
           className="h-full object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
         />
       </div>
@@ -67,6 +69,8 @@ const BookCard = ({ book }: BookCardProps) => {
         {/* Category & Rating */}
         <div className="flex items-center justify-between text-sm font-medium text-gray-600">
           <span>{category}</span>
+          <span>Pages: {totalPages}</span>
+          <span>{yearOfPublishing}</span>
           <div className="flex items-center gap-1.5 font-semibold text-gray-800">
             <span>{rating.toFixed(1)}</span>
             <span className="text-amber-400">★</span>
